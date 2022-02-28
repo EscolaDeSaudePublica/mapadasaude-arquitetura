@@ -1,0 +1,30 @@
+@startuml Atual
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(agregador, "Base project (agregador)") {
+    Container(postgres, "Postgres", "Postgres")
+    Container(mapasculturais, "Mapas culturais", "Nginx, PHP FPM")
+}
+
+System_Boundary(mapadasaude, "Mapa da saúde") {
+    System(mapadasaudev51, "Mapa da saúde versão 5.1", "branch MERGE ESP 5.1")
+}
+System_Boundary(temas, "Temas") {
+    Container(temasaude, "Tema Saúde", "Tema Saúde", "branch refatoração")
+}
+
+System_Boundary(plugins, "Plugins mapa da saúde") {
+    Container(pluginLocationStateCity, "Plugin LocationStateCity", "Plugin")
+    Container(pluginEvaluationMethodHomolog, "Plugin EvaluationMethodHomolog", "Plugin")
+    Container(pluginEvaluationMethodTechnicalNa, "Plugin EvaluationMethodTechnicalNa", "Plugin")
+    Container(pluginPDFReport, "Plugin PDFReport", "Plugin")
+    Container(SealCertified, "Plugin SealCertified", "Plugin")
+    Container(EditarInscricao, "Plugin EditarInscricao", "Plugin")
+}
+
+
+Rel(plugins, mapasculturais, "Plugins mapeados pelo volume e integrado com git submodules", "git, docker");
+Rel(temasaude, mapasculturais, "Tema mapeado pelo volume e integrado com git submodules", "git, docker");
+Rel(mapadasaudev51, mapasculturais, "Configurações mapeadas pelo volume", "docker")
+
+@enduml
