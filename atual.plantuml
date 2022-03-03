@@ -22,6 +22,7 @@ System_Boundary(agregador, "Base project (agregador)") {
 
 System_Boundary(mapadasaude, "Mapa da saúde") {
     System(mapadasaudev51, "Mapa da saúde versão 5.1", "branch MERGE ESP 5.1")
+    System(opauthkeycloak, "Opauth Keycloak", "Integração mapas e keycloak")
 }
 
 
@@ -30,5 +31,6 @@ Rel(plugins, baseproject, "Plugins integrados com git submodules e mapeados pelo
 Rel(temasaude, baseproject, "Tema integrados com git submodules e mapeados pelo volume", "git, docker");
 Rel(mapadasaudev51, baseproject, "Core e Configurações mapeadas pelo volume", "docker")
 Rel(baseproject, postgres, "Acesso ao banco de dados", "Doctrine/ORM")
+Rel(opauthkeycloak, mapadasaudev51, "Integração via Composer", "Composer")
 
 @enduml
