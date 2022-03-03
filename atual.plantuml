@@ -3,28 +3,32 @@
 
 System_Boundary(agregador, "Base project (agregador)") {
     Container(postgres, "Postgres", "Postgres")
-    Container(mapasculturais, "Mapas culturais", "Nginx, PHP FPM")
+    Container(baseproject, "Mapas Base Project", "Nginx, PHP FPM")
+
+
+    System(plugins, "Plugins mapa da saúde") {
+        Container(pluginLocationStateCity, "Plugin LocationStateCity", "Plugin")
+        Container(pluginEvaluationMethodHomolog, "Plugin EvaluationMethodHomolog", "Plugin")
+        Container(pluginEvaluationMethodTechnicalNa, "Plugin EvaluationMethodTechnicalNa", "Plugin")
+        Container(pluginPDFReport, "Plugin PDFReport", "Plugin")
+        Container(SealCertified, "Plugin SealCertified", "Plugin")
+        Container(EditarInscricao, "Plugin EditarInscricao", "Plugin")
+    }
+
+    System(temas, "Temas") {
+        Container(temasaude, "Tema Saúde", "Tema Saúde", "branch refatoração")
+    }
 }
 
 System_Boundary(mapadasaude, "Mapa da saúde") {
     System(mapadasaudev51, "Mapa da saúde versão 5.1", "branch MERGE ESP 5.1")
 }
-System_Boundary(temas, "Temas") {
-    Container(temasaude, "Tema Saúde", "Tema Saúde", "branch refatoração")
-}
-
-System_Boundary(plugins, "Plugins mapa da saúde") {
-    Container(pluginLocationStateCity, "Plugin LocationStateCity", "Plugin")
-    Container(pluginEvaluationMethodHomolog, "Plugin EvaluationMethodHomolog", "Plugin")
-    Container(pluginEvaluationMethodTechnicalNa, "Plugin EvaluationMethodTechnicalNa", "Plugin")
-    Container(pluginPDFReport, "Plugin PDFReport", "Plugin")
-    Container(SealCertified, "Plugin SealCertified", "Plugin")
-    Container(EditarInscricao, "Plugin EditarInscricao", "Plugin")
-}
 
 
-Rel(plugins, mapasculturais, "Plugins mapeados pelo volume e integrado com git submodules", "git, docker");
-Rel(temasaude, mapasculturais, "Tema mapeado pelo volume e integrado com git submodules", "git, docker");
-Rel(mapadasaudev51, mapasculturais, "Configurações mapeadas pelo volume", "docker")
+
+Rel(plugins, baseproject, "Plugins integrados com git submodules e mapeados pelo volume", "git, docker");
+Rel(temasaude, baseproject, "Tema integrados com git submodules e mapeados pelo volume", "git, docker");
+Rel(mapadasaudev51, baseproject, "Core e Configurações mapeadas pelo volume", "docker")
+Rel(baseproject, postgres, "Acesso ao banco de dados", "Doctrine/ORM")
 
 @enduml
